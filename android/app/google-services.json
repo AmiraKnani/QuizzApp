@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "803189623466",
+    "project_id": "learngerman-dcaf3",
+    "storage_bucket": "learngerman-dcaf3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803189623466:android:6b3477f2043d2dc7a85ed3",
+        "android_client_info": {
+          "package_name": "com.example.quizzapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803189623466-5fhgnlsl2iqda2u3p5q26lljear69eo1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.quizzapp",
+            "certificate_hash": "92406fc9775bcb5b1d376779a8c1c20fdd06a0e3"
+          }
+        },
+        {
+          "client_id": "803189623466-jl8k7r58ap29onmera9b8av24reeu5ap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTQBQc1qSM74ya6lSGVJiTBdUp58a3A9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803189623466-jl8k7r58ap29onmera9b8av24reeu5ap.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
