@@ -16,26 +16,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _userNameTextController = TextEditingController();
-  late TextEditingController _dateOfBirthTextController;
-  DateTime? _selectedDate;
-  String? _selectedGender;
+
 
   @override
-void initState() {
-  super.initState();
-  _passwordTextController = TextEditingController();
-  _emailTextController = TextEditingController();
-  _userNameTextController = TextEditingController();
-  _dateOfBirthTextController = TextEditingController(); // Initialize here
-}
-@override
-void dispose() {
-  _passwordTextController.dispose();
-  _emailTextController.dispose();
-  _userNameTextController.dispose();
-  _dateOfBirthTextController.dispose(); // Dispose here
-  super.dispose();
-}
+  void initState() {
+    super.initState();
+    _passwordTextController = TextEditingController();
+    _emailTextController = TextEditingController();
+    _userNameTextController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _passwordTextController.dispose();
+    _emailTextController.dispose();
+    _userNameTextController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,19 +51,19 @@ void dispose() {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            hexStringToColor("#8776d7"),
-            hexStringToColor("#8274d8"),
-            hexStringToColor("#3d4aec")
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+            image: DecorationImage(
+              image: AssetImage("assets/images/background2.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: SingleChildScrollView(
               child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 60, 20, 0),
+                  padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
                   child: Column(
                     children: <Widget>[
                       logoWidgetSmall("assets/images/logo1.png"),
                       const SizedBox(
-                        height: 30,
+                        height: 70,
                       ),
                       reusableTextField("Enter User Name", Icons.person_outline,
                           false, _userNameTextController),
@@ -81,84 +80,28 @@ void dispose() {
                       const SizedBox(
                         height: 20,
                       ),
-                      
-                      reusableTextField(
-                      "Date of Birth",
-                      Icons.calendar_today,
-                      false,
-                      _dateOfBirthTextController,
-                      suffix: TextButton(
-                        onPressed: () {
-                          _selectDate(context);
-                        },
-                        child: Text(
-                          _selectedDate != null
-                              ? DateFormat('yyyy-MM-dd').format(_selectedDate!)
-                              : 'Select your date of birth',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                      const SizedBox(height: 20),
-                      // Gender selection
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          _genderRadioButton('Female', 'Female'),
-                          _genderRadioButton('Male', 'Male'),
-                        ],
-                      ),
+
                       const SizedBox(height: 20),
                       signInSignUpButton(context, false, () {
-                        FirebaseAuth.instance.createUserWithEmailAndPassword(
-                        email: _emailTextController.text, 
-                        password: _passwordTextController.text).then((value) {
+                        FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: _emailTextController.text,
+                                password: _passwordTextController.text)
+                            .then((value) {
                           print("Created New Account");
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => HomeScreen()));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()));
                         }).onError((error, stackTrace) {
                           print("Error ${error.toString()}");
                         });
-                        
                       })
                     ],
                   )))),
     );
   }
 
-  // Method to show the date picker
-Future<void> _selectDate(BuildContext context) async {
-  final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-  if (pickedDate != null && pickedDate != _selectedDate) {
-    setState(() {
-      _selectedDate = pickedDate;
-      _dateOfBirthTextController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-    });
-  }
-}
 
-  // Widget for gender selection Radio button
-  Widget _genderRadioButton(String value, String title) {
-    return Expanded(
-      child: ListTile(
-        title: Text(title, style: TextStyle(color: Colors.white)),
-        leading: Radio<String>(
-          value: value,
-          groupValue: _selectedGender,
-          onChanged: (String? newValue) {
-            setState(() {
-              _selectedGender = newValue;
-            });
-          },
-        ),
-      ),
-    );
-  }
+
 }

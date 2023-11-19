@@ -28,12 +28,12 @@ class _ResetPwdState extends State<ResetPwd> {
       body: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-            hexStringToColor("#8776d7"),
-            hexStringToColor("#8274d8"),
-            hexStringToColor("#3d4aec")
-          ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                    decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/background2.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: SingleChildScrollView(
               child: Padding(
                   padding: EdgeInsets.fromLTRB(

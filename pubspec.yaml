@@ -41,6 +41,7 @@ dependencies:
   intl: ^0.18.1
   firebase_core: ^2.22.0
   firebase_auth: ^4.14.0
+  fl_chart: ^0.64.0
 
 
 dev_dependencies:
@@ -70,6 +71,8 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/images/logo1.png
+    - assets/images/background.png
+    - assets/images/background2.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
