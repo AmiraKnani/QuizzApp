@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:quizzapp/reusable_widgets/reusable_widget.dart';
 import 'package:quizzapp/screens/home_screen.dart';
-import 'package:quizzapp/utils/color_utils.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});

@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quizzapp/reusable_widgets/reusable_widget.dart';
 import 'package:quizzapp/screens/signin_screen.dart';
-import 'package:quizzapp/utils/color_utils.dart';
 
 class ResetPwd extends StatefulWidget {
   const ResetPwd({super.key});

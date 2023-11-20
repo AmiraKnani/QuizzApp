@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quizzapp/reusable_widgets/reusable_widget.dart';
 import 'package:quizzapp/screens/signin_screen.dart';
 import 'package:quizzapp/utils/color_utils.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 class HomeScreen extends StatelessWidget {
   List catNames = [
@@ -43,11 +41,10 @@ class HomeScreen extends StatelessWidget {
               padding:
                   EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
               decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  hexStringToColor("#8776d7"),
-                  hexStringToColor("#3d4aec"),
-                  hexStringToColor("#3d4aec")
-                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+                image: DecorationImage(
+                  image: AssetImage("assets/images/background2.png"),
+                  fit: BoxFit.cover,
+                ),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20)),
@@ -108,27 +105,66 @@ class HomeScreen extends StatelessWidget {
                             size: 25,
                           )),
                     ),
-                  )
+                  ),
                 ],
               )),
+          SizedBox(height: 22),
+           Padding(
+                    padding: EdgeInsets.only(left: 63, bottom: 22),
+                    child: Text("Good job! Keep it up! ",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                          wordSpacing: 2,
+                          color: Color.fromARGB(200, 0, 0, 0),
+                        )),
+                  ),
+          Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              // Image
+              Image.asset(
+                'assets/images/icon.png',
+                height: 200,
+                width: 200,
+              ),
+              // Circular progress bar
+              SizedBox(
+                height:
+                    240, 
+                width: 240,
+                child: CircularProgressIndicator(
+                  value: 0.25, 
+                  strokeWidth: 12, 
+                  backgroundColor: Colors
+                      .grey[300], 
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.blue), // The progress color
+                ),
+              ),
+            ],
+          ),
           Padding(
               padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.275,
+                  top: MediaQuery.of(context).size.height * 0.03,
                   left: 15,
                   right: 15),
               child: Column(
                 children: [
                   Container(
+                    height: 240,
                     decoration: BoxDecoration(
-                      color: Colors.white, 
+                      color: Colors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.5), 
+                          color: Colors.grey.withOpacity(0.5),
                           spreadRadius: 5,
                           blurRadius: 7,
                           offset: Offset(0, 3),
                         ),
                       ],
+                      borderRadius: BorderRadius.circular(6),
                     ),
                     child: GridView.builder(
                       itemCount: catNames.length,
@@ -171,12 +207,13 @@ class HomeScreen extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 32,
-        selectedItemColor: Color(0xFF674AEF),
+        selectedItemColor: hexStringToColor("#aaa0f0"),
         selectedFontSize: 18,
         unselectedItemColor: Colors.grey,
         onTap: (int index) {
           // Check if the 'Account' icon was tapped
-          if (index == 3) { // Assuming this is the index of 'Account' item
+          if (index == 3) {
+            // Assuming this is the index of 'Account' item
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => SignInScreen()),
             );
