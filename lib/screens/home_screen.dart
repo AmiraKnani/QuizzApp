@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzapp/screens/settings_screen.dart';
 import 'package:quizzapp/screens/signin_screen.dart';
 import 'package:quizzapp/utils/color_utils.dart';
 
@@ -33,6 +34,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey _accountKey = GlobalKey();
     return Scaffold(
       backgroundColor: hexStringToColor("#F9F9F9"),
       body: ListView(
@@ -109,17 +111,19 @@ class HomeScreen extends StatelessWidget {
                 ],
               )),
           SizedBox(height: 22),
-           Padding(
-                    padding: EdgeInsets.only(left: 63, bottom: 22),
-                    child: Text("Good job! Keep it up! ",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1,
-                          wordSpacing: 2,
-                          color: Color.fromARGB(200, 0, 0, 0),
-                        )),
-                  ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 22),
+            child: Center(
+              child: Text("Good job! Keep it up!",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1,
+                    wordSpacing: 2,
+                    color: Color.fromARGB(200, 0, 0, 0),
+                  )),
+            ),
+          ),
           Stack(
             alignment: Alignment.center,
             children: <Widget>[
@@ -131,16 +135,13 @@ class HomeScreen extends StatelessWidget {
               ),
               // Circular progress bar
               SizedBox(
-                height:
-                    240, 
+                height: 240,
                 width: 240,
                 child: CircularProgressIndicator(
-                  value: 0.25, 
-                  strokeWidth: 12, 
-                  backgroundColor: Colors
-                      .grey[300], 
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.blue), // The progress color
+                  value: 0.25,
+                  strokeWidth: 12,
+                  backgroundColor: Colors.grey[300],
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
                 ),
               ),
             ],
@@ -211,11 +212,38 @@ class HomeScreen extends StatelessWidget {
         selectedFontSize: 18,
         unselectedItemColor: Colors.grey,
         onTap: (int index) {
-          // Check if the 'Account' icon was tapped
           if (index == 3) {
-            // Assuming this is the index of 'Account' item
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => SignInScreen()),
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(Icons.settings),
+                      title: Text('Settings'),
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SettingsScreen()),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.exit_to_app),
+                      title: Text('Logout'),
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignInScreen()),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
             );
           }
         },
