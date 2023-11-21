@@ -127,13 +127,11 @@ class HomeScreen extends StatelessWidget {
           Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              // Image
               Image.asset(
                 'assets/images/icon.png',
                 height: 200,
                 width: 200,
               ),
-              // Circular progress bar
               SizedBox(
                 height: 240,
                 width: 240,
