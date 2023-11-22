@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:quizzapp/screens/analytics_screen.dart';
 import 'package:quizzapp/screens/home_screen.dart';
 import 'package:quizzapp/screens/signin_screen.dart';
 
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SignInScreen(),
+      home: HomeScreen(),
     );
   }
 }

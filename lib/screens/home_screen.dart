@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzapp/screens/analytics_screen.dart';
 import 'package:quizzapp/screens/settings_screen.dart';
 import 'package:quizzapp/screens/signin_screen.dart';
 import 'package:quizzapp/utils/color_utils.dart';
@@ -174,28 +175,41 @@ class HomeScreen extends StatelessWidget {
                         childAspectRatio: 1.1,
                       ),
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(top: 20),
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                color: catColors[index],
-                                shape: BoxShape.circle,
+                        return InkWell(
+                          onTap: () {
+                            if (catNames[index] == "Analytics") {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const AnalyticsScreen()),
+                              );
+                            }
+                            // Add else if conditions for other categories if needed
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 20),
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                  color: catColors[index],
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(child: catIcons[index]),
                               ),
-                              child: Center(child: catIcons[index]),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              catNames[index],
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black.withOpacity(0.7),
-                              ),
-                            )
-                          ],
+                              SizedBox(height: 10),
+                              Text(
+                                catNames[index],
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black.withOpacity(0.7),
+                                ),
+                              )
+                            ],
+                          ),
                         );
                       },
                     ),

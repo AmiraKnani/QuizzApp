@@ -90,15 +90,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
         elevation: 0,
         title: const Text(
           "Settings",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/images/background2.png"),
+            image: AssetImage("assets/images/background3.png"),
             fit: BoxFit.cover,
           ),
         ),
@@ -110,11 +111,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SizedBox(height: 100),
               _buildSectionTitle("Email Verification"),
               _buildEmailVerificationSection(),
-              SizedBox(height: 35),
+              SizedBox(height: 20),
               _buildSectionTitle("Change Password"),
               SizedBox(height: 20),
               _buildChangePasswordSection(),
-              SizedBox(height: 35),
+              SizedBox(height: 30),
               _buildSectionTitle("Notification Settings"),
               SizedBox(height: 5),
               _buildNotificationSettingsSection(),
@@ -129,7 +130,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Text(
       title,
       style: TextStyle(
-          fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),
+          fontSize: 22,           fontWeight: FontWeight.bold,
+          color: Colors.white,
+          shadows: [
+            Shadow(
+              offset: Offset(0, 1),
+              blurRadius: 2,
+              color: Colors.black.withOpacity(0.5),
+            ),
+          ],),
     );
   }
 
