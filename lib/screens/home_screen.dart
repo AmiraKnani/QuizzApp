@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quizzapp/screens/analytics_screen.dart';
 import 'package:quizzapp/screens/settings_screen.dart';
 import 'package:quizzapp/screens/signin_screen.dart';
+import 'package:quizzapp/screens/vocabulary_screen.dart';
 import 'package:quizzapp/utils/color_utils.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -183,6 +184,14 @@ class HomeScreen extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const AnalyticsScreen()),
+                              );
+                            }
+                              if (catNames[index] == "Vocabulary") {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const VocabularyScreen()),
                               );
                             }
                             // Add else if conditions for other categories if needed
