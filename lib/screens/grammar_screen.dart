@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() => runApp(MaterialApp(home: VocabularyScreen()));
+void main() => runApp(MaterialApp(home: GrammarScreen()));
 
-class VocabularyScreen extends StatefulWidget {
-  const VocabularyScreen({Key? key}) : super(key: key);
+class GrammarScreen extends StatefulWidget {
+  const GrammarScreen({Key? key}) : super(key: key);
 
   @override
-  State<VocabularyScreen> createState() => _VocabularyScreenState();
+  State<GrammarScreen> createState() => _GrammarScreenState();
 }
 
-class _VocabularyScreenState extends State<VocabularyScreen> {
+class _GrammarScreenState extends State<GrammarScreen> {
   int currentQuestionIndex = 1;
   int totalQuestions = 10;
   final Color primaryColor = Colors.blue.shade300;
@@ -25,7 +25,7 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          "Vocabulary",
+          "Grammar",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         iconTheme: IconThemeData(color: Colors.white),

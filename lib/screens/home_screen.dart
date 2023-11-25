@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:quizzapp/screens/analytics_screen.dart';
+import 'package:quizzapp/screens/conjugation_screen.dart';
+import 'package:quizzapp/screens/courses_screen.dart';
+import 'package:quizzapp/screens/grammar_screen.dart';
+import 'package:quizzapp/screens/mixed_screen.dart';
+import 'package:quizzapp/screens/numbers_screen.dart';
 import 'package:quizzapp/screens/settings_screen.dart';
 import 'package:quizzapp/screens/signin_screen.dart';
 import 'package:quizzapp/screens/vocabulary_screen.dart';
@@ -186,12 +191,39 @@ class HomeScreen extends StatelessWidget {
                                         const AnalyticsScreen()),
                               );
                             }
-                              if (catNames[index] == "Vocabulary") {
+                            if (catNames[index] == "Vocabulary") {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const VocabularyScreen()),
+                              );
+                            } else if (catNames[index] == "Conjugation") {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ConjugationScreen()),
+                              );
+                            } else if (catNames[index] == "Grammar") {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const GrammarScreen()),
+                              );
+                            } else if (catNames[index] == "Numbers") {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const NumbersScreen()),
+                              );
+                            } else if (catNames[index] == "Mixed") {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const MixedScreen()),
                               );
                             }
                             // Add else if conditions for other categories if needed
@@ -233,39 +265,58 @@ class HomeScreen extends StatelessWidget {
         selectedFontSize: 18,
         unselectedItemColor: Colors.grey,
         onTap: (int index) {
-          if (index == 3) {
-            showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      leading: Icon(Icons.settings),
-                      title: Text('Settings'),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SettingsScreen()),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.exit_to_app),
-                      title: Text('Logout'),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignInScreen()),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
+          switch (index) {
+            case 0: // Home
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
+              break;
+            case 1: // Courses
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => CoursesScreen()),
+              );
+              break;
+            case 2: // Wishlist
+              // Handle Wishlist navigation
+              break;
+            case 3: // Account, Settings, Logout
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      ListTile(
+                        leading: Icon(Icons.settings),
+                        title: Text('Settings'),
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SettingsScreen()),
+                          );
+                        },
+                      ),
+                      ListTile(
+                        leading: Icon(Icons.exit_to_app),
+                        title: Text('Logout'),
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignInScreen()),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+              break;
+            default:
+              break;
           }
         },
         items: [
