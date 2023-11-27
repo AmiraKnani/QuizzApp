@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quizzapp/screens/analytics_screen.dart';
 import 'package:quizzapp/screens/conjugation_screen.dart';
 import 'package:quizzapp/screens/courses_screen.dart';
@@ -9,9 +11,18 @@ import 'package:quizzapp/screens/settings_screen.dart';
 import 'package:quizzapp/screens/signin_screen.dart';
 import 'package:quizzapp/screens/vocabulary_screen.dart';
 import 'package:quizzapp/utils/color_utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class HomeScreen extends StatelessWidget {
-  List catNames = [
+
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String _userName = ''; // Declare the userName variable
+
+  List<String> catNames = [
     "Analytics",
     "Vocabulary",
     "Conjugation",
@@ -20,6 +31,7 @@ class HomeScreen extends StatelessWidget {
     "Mixed"
   ];
 
+  // Corrected the color list by removing the incomplete color value
   List<Color> catColors = [
     Color(0xFFFFCF2F),
     Color(0xFF6FE08D),
@@ -27,7 +39,6 @@ class HomeScreen extends StatelessWidget {
     Color(0xFFFFC7F7F),
     Color(0xFFCB84FB),
     Color(0xFF78E667),
-    Color(0xFF),
   ];
 
   List<Icon> catIcons = [
@@ -38,6 +49,27 @@ class HomeScreen extends StatelessWidget {
     Icon(Icons.calculate, color: Colors.white, size: 30),
     Icon(Icons.dashboard_customize, color: Colors.white, size: 30),
   ];
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserName();
+  }
+
+void _fetchUserName() {
+  String? userId = FirebaseAuth.instance.currentUser?.uid;
+  if (userId != null) {
+    FirebaseFirestore.instance.collection('users').doc(userId).get().then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          _userName = documentSnapshot['userName'].split(' ')[0];
+        });
+      }
+    }).catchError((error) {
+      // Handle any errors here
+    });
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +98,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(left: 3),
-                        child: Text("Hallo, ",
+                        child: Text("Hallo $_userName,",
                             style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.w600,
@@ -134,10 +166,10 @@ class HomeScreen extends StatelessWidget {
           Stack(
             alignment: Alignment.center,
             children: <Widget>[
-              Image.asset(
-                'assets/images/icon.png',
-                height: 200,
-                width: 200,
+              Lottie.asset(
+                'assets/animations/rock.json', 
+                height: 240, 
+                width: 240, 
               ),
               SizedBox(
                 height: 240,

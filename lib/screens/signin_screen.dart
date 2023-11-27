@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:quizzapp/reusable_widgets/reusable_widget.dart';
 import 'package:quizzapp/screens/home_screen.dart';
 import 'package:quizzapp/screens/resetpassword_screen.dart';
 import 'package:quizzapp/screens/signup_screen.dart';
 import 'package:quizzapp/services/firebase_services.dart';
-
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -18,137 +18,135 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
+  bool _isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/background.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: SingleChildScrollView(
-                child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                        20, MediaQuery.of(context).size.height * 0.04, 20, 0),
-                    child: Column(
-                      children: <Widget>[
-                        logoWidget("assets/images/logo.png"),
-                        reusableTextField("Enter Email", Icons.person_outline,
-                            false, _emailTextController),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        reusableTextField("Enter Password", Icons.lock_outline,
-                            true, _passwordTextController),
-                        SizedBox(
-                          height: 15,
-                        ),
-                        ResetOption(),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        signInSignUpButton(context, true, () {
-                          FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                                  email: _emailTextController.text,
-                                  password: _passwordTextController.text)
-                              .then((value) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeScreen()));
-                          }).catchError((error, stackTrace) {
-                            String errorMessage = "An unknown error occurred.";
-                            if (error is FirebaseAuthException) {
-                              errorMessage = getFirebaseAuthErrorMessage(error);
-                            }
-
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text("Error"),
-                                  content: Text(errorMessage),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: const Text("Close",
-                                          style: TextStyle(
-                                              color: Colors.deepPurple)),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                            print("Error ${error.toString()}");
-                          });
-                        }),
-                        const SizedBox(height: 130),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+        body: _isLoading
+            ? Center(child: Lottie.asset('assets/animations/loading.json'))
+            : Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/background.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: SingleChildScrollView(
+                    child: Padding(
+                        padding: EdgeInsets.fromLTRB(20,
+                            MediaQuery.of(context).size.height * 0.04, 20, 0),
+                        child: Column(
                           children: <Widget>[
-                            Expanded(
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                height: 1.0,
-                                color: Color.fromARGB(30, 0, 0, 0),
-                              ),
+                            logoWidget("assets/images/logo.png"),
+                            reusableTextField(
+                                "Enter Email",
+                                Icons.person_outline,
+                                false,
+                                _emailTextController),
+                            SizedBox(
+                              height: 15,
                             ),
-                            const Text(
-                              "Or connect with",
-                              style: TextStyle(
-                                  color: Color.fromARGB(139, 0, 0, 0)),
+                            reusableTextField(
+                                "Enter Password",
+                                Icons.lock_outline,
+                                true,
+                                _passwordTextController),
+                            SizedBox(
+                              height: 15,
                             ),
-                            Expanded(
-                              child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 20),
-                                height: 1.0,
-                                color: Color.fromARGB(30, 0, 0, 0),
-                              ),
+                            ResetOption(),
+                            SizedBox(
+                              height: 25,
                             ),
+                            signInSignUpButton(context, true, () {
+                              setState(() {
+                                FocusScope.of(context).unfocus();
+                                _isLoading = true;
+                              });
+
+                              FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                      email: _emailTextController.text,
+                                      password: _passwordTextController.text)
+                                  .then((value) {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen()));
+                                  })
+                                  .catchError((error, stackTrace) {})
+                                  .whenComplete(() {
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                  });
+                            }),
+                            const SizedBox(height: 130),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    height: 1.0,
+                                    color: Color.fromARGB(30, 0, 0, 0),
+                                  ),
+                                ),
+                                const Text(
+                                  "Or connect with",
+                                  style: TextStyle(
+                                      color: Color.fromARGB(139, 0, 0, 0)),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    height: 1.0,
+                                    color: Color.fromARGB(30, 0, 0, 0),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(FontAwesomeIcons.google,
+                                      color: Colors.red),
+                                  onPressed: () async {
+                                    await FirebaseServices().signInWithGoogle();
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen()));
+                                  },
+                                ),
+                                const SizedBox(width: 5),
+                                IconButton(
+                                  icon: const Icon(FontAwesomeIcons.facebook,
+                                      color: Colors.blueAccent),
+                                  onPressed: () async {
+                                    await FirebaseServices()
+                                        .signInWithFacebook();
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen()));
+                                  },
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            signUpOption(),
                           ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              icon: const Icon(FontAwesomeIcons.google,
-                                  color: Colors.red),
-                              onPressed: () async {
-                                await FirebaseServices().signInWithGoogle();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeScreen()));
-                              },
-                            ),
-                            const SizedBox(width: 5),
-                            IconButton(
-                              icon: const Icon(FontAwesomeIcons.facebook,
-                                  color: Colors.blueAccent),
-                              onPressed: () async {
-                                await FirebaseServices().signInWithFacebook();
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeScreen()));
-                              },
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        signUpOption(),
-                      ],
-                    )))));
+                        )))));
   }
 
   Row signUpOption() {
@@ -173,8 +171,7 @@ class _SignInScreenState extends State<SignInScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding:
-              const EdgeInsets.only(left: 210), // Adjust the value as needed
+          padding: const EdgeInsets.only(left: 210),
           child: const Text(
             "",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
