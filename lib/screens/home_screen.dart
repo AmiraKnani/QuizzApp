@@ -146,6 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       );
     }
+    _searchController.text = '';
   }
 
   @override
