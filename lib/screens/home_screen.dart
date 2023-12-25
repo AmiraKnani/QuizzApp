@@ -13,13 +13,13 @@ import 'package:quizzapp/screens/vocabulary_screen.dart';
 import 'package:quizzapp/utils/color_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _searchController = TextEditingController();
   String _userName = ''; // Declare the userName variable
 
   List<String> catNames = [
@@ -55,21 +55,98 @@ class _HomeScreenState extends State<HomeScreen> {
     _fetchUserName();
   }
 
-void _fetchUserName() {
-  String? userId = FirebaseAuth.instance.currentUser?.uid;
-  if (userId != null) {
-    FirebaseFirestore.instance.collection('users').doc(userId).get().then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          _userName = documentSnapshot['userName'].split(' ')[0];
-        });
-      }
-    }).catchError((error) {
-      // Handle any errors here
-    });
+  void _fetchUserName() {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          setState(() {
+            _userName = documentSnapshot['userName'].split(' ')[0];
+          });
+        }
+      }).catchError((error) {
+        // Handle any errors here
+      });
+    }
   }
-}
 
+  void _onSearch(String query) {
+    // Convert the search query to a format that matches your category names
+    String formattedQuery = query.trim().toLowerCase();
+
+    // Find the matching category
+    String? matchedCategory;
+    for (var category in catNames) {
+      if (category.toLowerCase() == formattedQuery) {
+        matchedCategory = category;
+        break;
+      }
+    }
+
+    // Navigate to the corresponding screen based on the matched category
+    if (matchedCategory != null) {
+      switch (matchedCategory) {
+        case "Analytics":
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AnalyticsScreen()),
+          );
+          break;
+        case "Vocabulary":
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => VocabularyScreen()),
+          );
+          break;
+        case "Conjugation":
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ConjugationScreen()),
+          );
+          break;
+        case "Grammar":
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => GrammarScreen()),
+          );
+          break;
+        case "Numbers":
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NumbersScreen()),
+          );
+          break;
+        case "Mixed":
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MixedScreen()),
+          );
+          break;
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Search Result"),
+            content: Text("No matching category found."),
+            actions: [
+              TextButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +212,7 @@ void _fetchUserName() {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: TextFormField(
+                      controller: _searchController,
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: "Search here...",
@@ -145,6 +223,7 @@ void _fetchUserName() {
                             Icons.search,
                             size: 25,
                           )),
+                          onFieldSubmitted: _onSearch,
                     ),
                   ),
                 ],
@@ -167,9 +246,9 @@ void _fetchUserName() {
             alignment: Alignment.center,
             children: <Widget>[
               Lottie.asset(
-                'assets/animations/rock.json', 
-                height: 240, 
-                width: 240, 
+                'assets/animations/rock.json',
+                height: 240,
+                width: 240,
               ),
               SizedBox(
                 height: 240,
